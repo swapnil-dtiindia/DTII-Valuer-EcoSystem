@@ -12,7 +12,7 @@ export default function FinancialYearsPage() {
     { key: 'code', header: 'Case ID code', cell: (f) => <span className="font-mono text-xs">FY{f.shortCode}</span> },
     { key: 'from', header: 'From', cell: (f) => formatDate(f.startDate) },
     { key: 'to', header: 'To', cell: (f) => formatDate(f.endDate) },
-    { key: 'status', header: 'Status', cell: (f) => (f.isCurrent ? <Badge tone="primary">Current</Badge> : <Badge tone={f.status === 'OPEN' ? 'success' : 'neutral'}>{f.status.toLowerCase()}</Badge>) },
+    { key: 'status', header: 'Status', cell: (f) => (f.isCurrent ? <Badge dot tone="primary">Current</Badge> : <Badge dot tone={f.status === 'OPEN' ? 'success' : 'neutral'}>{f.status.toLowerCase()}</Badge>) },
   ];
   return (
     <>

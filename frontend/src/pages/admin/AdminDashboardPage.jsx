@@ -6,6 +6,7 @@ import { firmApi } from '@/services/adminApi';
 import { Button, Card, CardContent, CardHeader, CardTitle, Skeleton } from '@/components/ui/primitives';
 import { PageHeader } from '@/components/data/PageHeader';
 import { StatCard } from '@/components/data/StatCard';
+import { HorizontalBars } from '@/components/data/charts';
 import { EmptyState, ErrorState } from '@/components/data/States';
 import { formatDate, humanize } from '@/utils/format';
 
@@ -50,16 +51,24 @@ export default function AdminDashboardPage() {
             {isLoading ? (
               <Skeleton className="h-32" />
             ) : (
-              <ul className="space-y-2">
-                {data.employeesByRole.map((r) => (
-                  <li key={r.code}>
-                    <Link to={`/employees?role=${r.code}`} className="flex items-center justify-between rounded-lg px-3 py-2 text-sm hover:bg-accent">
-                      <span>{r.name}</span>
-                      <span className="tabular font-semibold">{r.count}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <HorizontalBars
+                  items={data.employeesByRole.map((r) => ({ key: r.code, label: r.name, value: r.count }))}
+                  ariaLabel="Employees by role"
+                  emptyText="No employees yet"
+                  seriesName="People"
+                />
+                <ul className="mt-4 space-y-1 border-t pt-3">
+                  {data.employeesByRole.map((r) => (
+                    <li key={r.code}>
+                      <Link to={`/employees?role=${r.code}`} className="flex items-center justify-between rounded-lg px-3 py-2 text-sm hover:bg-accent">
+                        <span>{r.name}</span>
+                        <span className="tabular font-semibold">{r.count}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </CardContent>
         </Card>

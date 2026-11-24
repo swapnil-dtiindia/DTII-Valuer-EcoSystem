@@ -89,7 +89,7 @@ function Requests({ c, can, isClient, onFulfil }) {
                 {r.dueDate ? ` · by ${formatDate(r.dueDate)}` : ''}
               </p>
             </div>
-            <Badge tone={r.status === 'OPEN' ? 'warning' : r.status === 'FULFILLED' ? 'success' : 'neutral'}>{r.status.toLowerCase()}</Badge>
+            <Badge dot tone={r.status === 'OPEN' ? 'warning' : r.status === 'FULFILLED' ? 'success' : 'danger'}>{r.status.toLowerCase()}</Badge>
             {r.status === 'OPEN' && (isClient || r.requestedFrom !== 'CLIENT') && (
               <Button size="sm" onClick={() => onFulfil(r)}>
                 <Upload /> Upload

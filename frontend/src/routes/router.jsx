@@ -3,27 +3,21 @@ import { createBrowserRouter, Outlet } from 'react-router';
 import { AuthProvider } from '@/context/AuthContext';
 import AuthLayout from '@/layouts/AuthLayout';
 import AppShell from '@/components/layout/AppShell';
-import { Spinner } from '@/components/ui/primitives';
+import { FormSkeleton, PageSkeleton } from '@/components/ui/primitives';
 import { HomeRedirect, RedirectIfAuthenticated, RequireAuth } from './guards';
 
-const L = (factory) => {
+const L = (factory, fallback = <PageSkeleton />) => {
   const Component = lazy(factory);
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-20">
-          <Spinner className="size-7" />
-        </div>
-      }
-    >
+    <Suspense fallback={fallback}>
       <Component />
     </Suspense>
   );
 };
-const LP = (factory, props) => {
+const LP = (factory, props, fallback = <PageSkeleton />) => {
   const Component = lazy(factory);
   return (
-    <Suspense fallback={<Spinner className="mx-auto size-7" />}>
+    <Suspense fallback={fallback}>
       <Component {...props} />
     </Suspense>
   );
@@ -52,17 +46,17 @@ export const router = createBrowserRouter([
       {
         element: <AuthLayout />,
         children: [
-          { path: '/status', element: L(() => import('@/pages/system/SystemStatusPage')) },
-          { path: '/verify/:code', element: L(() => import('@/pages/system/VerifyReportPage')) },
+          { path: '/status', element: L(() => import('@/pages/system/SystemStatusPage'), <FormSkeleton />) },
+          { path: '/verify/:code', element: L(() => import('@/pages/system/VerifyReportPage'), <FormSkeleton />) },
           {
             element: <RedirectIfAuthenticated />,
             children: [
-              { path: '/login', element: L(() => import('@/pages/auth/LoginPage')) },
-              { path: '/forgot-password', element: L(() => import('@/pages/auth/ForgotPasswordPage')) },
+              { path: '/login', element: L(() => import('@/pages/auth/LoginPage'), <FormSkeleton />) },
+              { path: '/forgot-password', element: L(() => import('@/pages/auth/ForgotPasswordPage'), <FormSkeleton />) },
             ],
           },
-          { path: '/accept-invite', element: LP(() => import('@/pages/auth/SetPasswordPage'), { mode: 'invite' }) },
-          { path: '/reset-password', element: LP(() => import('@/pages/auth/SetPasswordPage'), { mode: 'reset' }) },
+          { path: '/accept-invite', element: LP(() => import('@/pages/auth/SetPasswordPage'), { mode: 'invite' }, <FormSkeleton />) },
+          { path: '/reset-password', element: LP(() => import('@/pages/auth/SetPasswordPage'), { mode: 'reset' }, <FormSkeleton />) },
         ],
       },
 

@@ -6,7 +6,9 @@ export function CaseStatusBadge({ status, overdue }) {
   const meta = CASE_STATUS[status] ?? { label: status, tone: 'neutral' };
   return (
     <span className="inline-flex items-center gap-1">
-      <Badge tone={meta.tone}>{meta.label}</Badge>
+      <Badge tone={meta.tone} dot>
+        {meta.label}
+      </Badge>
       {overdue && (
         <Badge tone="danger">
           <AlertTriangle className="size-3" /> Overdue

@@ -1,18 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import { Download } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { analyticsApi } from '@/services/analyticsApi';
 import { mastersApi } from '@/services/casesApi';
-import { Badge, Button, Card, Input, Label, NativeSelect } from '@/components/ui/primitives';
+import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Label, NativeSelect } from '@/components/ui/primitives';
 import { PageHeader } from '@/components/data/PageHeader';
 import { DataTable } from '@/components/data/DataTable';
 import { StatCard } from '@/components/data/StatCard';
+import { ColumnChart, DonutBreakdown } from '@/components/data/charts';
 import { EmptyState } from '@/components/data/States';
 import { CaseStatusBadge } from '@/components/workflow/CaseStatusBadge';
-import { STATUS_GROUPS } from '@/utils/caseStatus';
+import { CASE_STATUS, STATUS_GROUPS } from '@/utils/caseStatus';
 import { formatDate, formatINR } from '@/utils/format';
 
 /** Case register report with filters and CSV export (scoped to the cases the user may see). */
@@ -27,6 +28,22 @@ export default function ReportsPage() {
     queryFn: async () => ({ banks: (await mastersApi.banks({ pageSize: 100 })).items, categories: (await mastersApi.categories()).items, fys: (await mastersApi.financialYears()).items }),
     enabled: can('master.view'),
   });
+  const visuals = useMemo(() => {
+    const rows = data?.rows ?? [];
+    const statusMap = new Map();
+    const bankMap = new Map();
+    for (const r of rows) {
+      statusMap.set(r.status, (statusMap.get(r.status) ?? 0) + 1);
+      if (r.marketValue) bankMap.set(r.bank || 'Unspecified', (bankMap.get(r.bank || 'Unspecified') ?? 0) + r.marketValue);
+    }
+    return {
+      statuses: [...statusMap.entries()].sort((a, b) => b[1] - a[1]).map(([s, n]) => ({ key: s, name: CASE_STATUS[s]?.label ?? s, value: n })),
+      banks: [...bankMap.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([name, value]) => ({ key: name, label: name, value })),
+    };
+  }, [data]);
   const columns = [
     { key: 'case', header: 'Case ID', cell: (r) => <span className="font-mono text-xs">{r.caseNumber}</span> },
     { key: 'received', header: 'Received', cell: (r) => formatDate(r.receivedOn), className: 'hidden md:table-cell' },
@@ -112,10 +129,34 @@ export default function ReportsPage() {
         )}
       </Card>
       {data && (
-        <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-          <StatCard label="Cases" value={data.totals.cases} />
-          <StatCard label="Total market value" value={formatINR(data.totals.marketValue)} />
-        </div>
+        <>
+          <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <StatCard label="Cases" value={data.totals.cases} />
+            <StatCard label="Total market value" value={formatINR(data.totals.marketValue)} />
+            <StatCard label="Sanctioned" value={formatINR(data.totals.sanctioned)} />
+            <StatCard label="Disbursed" value={formatINR(data.totals.disbursed)} />
+          </div>
+          <div className="mb-6 grid gap-6 lg:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Filtered cases by status</CardTitle>
+                <CardDescription>Uses the same rows as the register below.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DonutBreakdown items={visuals.statuses} ariaLabel="Filtered cases by status" emptyText="No cases match these filters" />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Market value by bank</CardTitle>
+                <CardDescription>Top banks in the current filter, from reported market value.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ColumnChart items={visuals.banks} ariaLabel="Market value by bank" emptyText="No market values in this selection" format={formatINR} seriesName="Market value" />
+              </CardContent>
+            </Card>
+          </div>
+        </>
       )}
       <Card>
         <DataTable columns={columns} rows={data?.rows.map((r) => ({ ...r, id: r.caseId }))} loading={isLoading} error={error} onRetry={refetch} onRowClick={(r) => navigate(`/cases/${r.caseId}`)} empty={<EmptyState title="No cases match these filters" />} />

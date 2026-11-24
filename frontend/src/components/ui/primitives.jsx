@@ -8,16 +8,16 @@ import { cn } from '@/utils/cn';
 /* ───────────── Button ───────────── */
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring cursor-pointer',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,background-color,border-color,box-shadow,transform] duration-150 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring cursor-pointer active:scale-[0.98]',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover',
-        outline: 'border border-input bg-card hover:bg-accent text-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-muted',
-        ghost: 'hover:bg-accent text-foreground',
-        destructive: 'bg-destructive text-white hover:bg-destructive/90',
-        link: 'text-primary underline-offset-4 hover:underline px-0',
+        default: 'bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover hover:shadow-md active:shadow-sm',
+        outline: 'border border-input bg-card text-foreground hover:border-primary/30 hover:bg-accent hover:shadow-sm',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-muted hover:shadow-sm',
+        ghost: 'text-foreground hover:bg-accent',
+        destructive: 'bg-destructive text-white shadow-sm hover:bg-destructive/90 hover:shadow-md active:shadow-sm',
+        link: 'px-0 text-primary underline-offset-4 shadow-none hover:underline active:scale-100',
       },
       size: { default: 'h-9 px-4', sm: 'h-8 px-3 text-xs', lg: 'h-11 px-6', icon: 'h-9 w-9' },
     },
@@ -48,7 +48,7 @@ export const Button = forwardRef(function Button({ className, variant, size, asC
 /* ───────────── Inputs ───────────── */
 
 const fieldBase =
-  'flex w-full rounded-md border border-input bg-card px-3 text-sm shadow-xs transition-colors placeholder:text-muted-foreground/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:border-ring disabled:cursor-not-allowed disabled:opacity-60 aria-[invalid=true]:border-destructive aria-[invalid=true]:ring-destructive/20';
+  'flex w-full rounded-md border border-input bg-card px-3 text-sm shadow-xs transition-[border-color,box-shadow,background-color] duration-150 placeholder:text-muted-foreground/70 hover:border-primary/35 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/15 disabled:cursor-not-allowed disabled:opacity-60 aria-[invalid=true]:border-destructive aria-[invalid=true]:ring-destructive/15';
 
 export const Input = forwardRef(function Input({ className, ...props }, ref) {
   return <input ref={ref} className={cn(fieldBase, 'h-9 py-1', className)} {...props} />;
@@ -82,7 +82,7 @@ export const Label = forwardRef(function Label({ className, ...props }, ref) {
 /* ───────────── Card ───────────── */
 
 export function Card({ className, ...props }) {
-  return <div className={cn('rounded-xl border bg-card text-card-foreground shadow-[0_1px_2px_rgba(16,24,40,0.04)]', className)} {...props} />;
+  return <div className={cn('rounded-xl border bg-card text-card-foreground shadow-[var(--shadow-card)]', className)} {...props} />;
 }
 export function CardHeader({ className, ...props }) {
   return <div className={cn('flex flex-col gap-1 p-5 pb-3', className)} {...props} />;
@@ -105,23 +105,62 @@ export const badgeVariants = cva('inline-flex items-center gap-1 rounded-full px
       neutral: 'bg-muted text-secondary-foreground ring-border',
       primary: 'bg-primary-soft text-primary ring-primary/20',
       info: 'bg-info-soft text-info ring-info/20',
-      success: 'bg-success-soft text-success ring-success/20',
-      warning: 'bg-warning-soft text-warning ring-warning/20',
-      danger: 'bg-destructive-soft text-destructive ring-destructive/20',
+      success: 'bg-success-soft text-success ring-success/25',
+      warning: 'bg-warning-soft text-warning ring-warning/25',
+      danger: 'bg-destructive-soft text-destructive ring-destructive/25',
+      teal: 'bg-teal-soft text-teal ring-teal/25',
+      violet: 'bg-violet-soft text-violet ring-violet/25',
     },
   },
   defaultVariants: { tone: 'neutral' },
 });
 
-/** @param {{ tone?: 'neutral'|'primary'|'info'|'success'|'warning'|'danger' } & React.HTMLAttributes<HTMLSpanElement>} props */
-export function Badge({ className, tone, ...props }) {
-  return <span className={cn(badgeVariants({ tone }), className)} {...props} />;
+/** @param {{ tone?: 'neutral'|'primary'|'info'|'success'|'warning'|'danger'|'teal'|'violet', dot?: boolean } & React.HTMLAttributes<HTMLSpanElement>} props */
+export function Badge({ className, tone, dot, children, ...props }) {
+  return (
+    <span className={cn(badgeVariants({ tone }), className)} {...props}>
+      {dot && <span className="size-1.5 shrink-0 rounded-full bg-current" aria-hidden />}
+      {children}
+    </span>
+  );
 }
 
 /* ───────────── Misc ───────────── */
 
+/** Shimmer placeholder. Replaces the old pulse block everywhere a page or table is loading. */
 export function Skeleton({ className, ...props }) {
-  return <div className={cn('animate-pulse rounded-md bg-muted', className)} {...props} />;
+  return <div className={cn('skeleton rounded-md', className)} aria-hidden {...props} />;
+}
+
+/** Compact placeholder for sign-in and other public cards. */
+export function FormSkeleton() {
+  return (
+    <div className="space-y-4" aria-busy="true" aria-live="polite" aria-label="Loading">
+      <Skeleton className="h-7 w-36" />
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-11 w-full" />
+    </div>
+  );
+}
+
+/** Page-shaped placeholder used while a screen or its data is loading. */
+export function PageSkeleton() {
+  return (
+    <div className="space-y-6" aria-busy="true" aria-live="polite" aria-label="Loading">
+      <div className="space-y-2">
+        <Skeleton className="h-8 w-56 max-w-full" />
+        <Skeleton className="h-4 w-80 max-w-full" />
+      </div>
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        {Array.from({ length: 4 }, (_, i) => (
+          <Skeleton key={i} className="h-24" />
+        ))}
+      </div>
+      <Skeleton className="h-64 w-full" />
+    </div>
+  );
 }
 
 export function Separator({ className }) {

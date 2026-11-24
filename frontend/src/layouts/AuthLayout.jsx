@@ -20,7 +20,8 @@ export default function AuthLayout() {
         />
         <Logo dark />
         <div className="relative mt-auto max-w-md">
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight">A digital trust ecosystem for valuers, clients and banks.</h2>
+          <p className="text-[11px] font-semibold tracking-[0.18em] text-[#8eb8ff] uppercase">Property valuation platform</p>
+          <h2 className="mt-3 text-4xl font-semibold leading-[1.15] tracking-tight">A digital trust ecosystem for valuers, clients and banks.</h2>
           <p className="mt-4 text-sidebar-foreground">
             Inspection, technical review, client approval, digital signature and bank submission, all in one traceable workflow.
           </p>
@@ -41,11 +42,13 @@ export default function AuthLayout() {
         <p className="relative mt-12 text-xs text-sidebar-foreground/50">© {new Date().getFullYear()} DTII · Confidential valuation data. Authorised users only.</p>
       </section>
       <section className="auth-backdrop flex items-center justify-center p-6 sm:p-10">
-        <div className="w-full max-w-sm">
-          <div className="mb-8 lg:hidden">
+        <div className="w-full max-w-md">
+          <div className="mb-6 lg:hidden">
             <Logo />
           </div>
-          <Outlet />
+          <div className="rounded-2xl border bg-card p-6 shadow-[var(--shadow-card)] sm:p-8">
+            <Outlet />
+          </div>
         </div>
       </section>
     </div>

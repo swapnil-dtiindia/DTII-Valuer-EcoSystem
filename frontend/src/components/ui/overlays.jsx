@@ -84,7 +84,7 @@ export function DropdownMenuItem({ className, ...props }) {
   return (
     <DropdownPrimitive.Item
       className={cn(
-        'flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-2 text-sm outline-none data-[highlighted]:bg-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:size-4 [&_svg]:text-muted-foreground',
+        'flex cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-2 text-sm outline-none transition-colors data-[highlighted]:bg-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:size-4 [&_svg]:text-muted-foreground',
         className,
       )}
       {...props}
@@ -112,7 +112,7 @@ export function TabsTrigger({ className, ...props }) {
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm cursor-pointer',
+        'inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:text-foreground data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm',
         className,
       )}
       {...props}

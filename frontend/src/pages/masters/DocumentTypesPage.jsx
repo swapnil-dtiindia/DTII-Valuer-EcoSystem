@@ -42,7 +42,7 @@ export default function DocumentTypesPage() {
       header: 'Status',
       cell: (d) =>
         d.isPlatform || !can('master.manage') ? (
-          <Badge tone={d.active ? 'success' : 'neutral'}>{d.active ? 'Active' : 'Inactive'}</Badge>
+          <Badge dot tone={d.active ? 'success' : 'danger'}>{d.active ? 'Active' : 'Inactive'}</Badge>
         ) : (
           <Button size="sm" variant="outline" onClick={() => toggle.mutate(d)}>
             {d.active ? 'Deactivate' : 'Activate'}

@@ -3,7 +3,7 @@ import { Bell } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { notificationsApi } from '@/services/analyticsApi';
-import { Spinner } from '@/components/ui/primitives';
+import { Skeleton } from '@/components/ui/primitives';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/overlays';
 import { timeAgo } from '@/utils/format';
 
@@ -18,7 +18,7 @@ export function NotificationBell() {
   const unread = count?.unread ?? 0;
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger className="relative rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`}>
+      <DropdownMenuTrigger className="relative rounded-lg p-2 text-muted-foreground transition hover:bg-accent hover:text-foreground active:scale-95 data-[state=open]:bg-accent data-[state=open]:text-foreground" aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`}>
         <Bell className="size-5" />
         {unread > 0 && <span className="tabular absolute right-1 top-1 flex min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-4 text-white">{unread > 99 ? '99+' : unread}</span>}
       </DropdownMenuTrigger>
@@ -31,8 +31,13 @@ export function NotificationBell() {
         </div>
         <div className="max-h-96 overflow-y-auto">
           {isLoading && (
-            <div className="flex justify-center py-6">
-              <Spinner />
+            <div className="space-y-3 px-4 py-4" aria-busy="true" aria-label="Loading notifications">
+              {Array.from({ length: 4 }, (_, i) => (
+                <div key={i} className="space-y-2">
+                  <Skeleton className="h-3.5 w-40" />
+                  <Skeleton className="h-3 w-full" />
+                </div>
+              ))}
             </div>
           )}
           {data?.items.length === 0 && <p className="px-4 py-8 text-center text-sm text-muted-foreground">You&apos;re all caught up.</p>}

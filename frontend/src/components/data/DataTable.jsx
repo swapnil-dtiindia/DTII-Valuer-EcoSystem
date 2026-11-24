@@ -19,7 +19,7 @@ export function DataTable({ columns, rows, loading, error, onRetry, empty, onRow
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b bg-muted/50 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            <tr className="border-b bg-muted/70 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
               {columns.map((c) => (
                 <th key={c.key} scope="col" className={cn('px-4 py-2.5 font-medium', c.className)}>
                   {c.header}
@@ -33,7 +33,7 @@ export function DataTable({ columns, rows, loading, error, onRetry, empty, onRow
                 <tr key={i} className="border-b last:border-0">
                   {columns.map((c) => (
                     <td key={c.key} className="px-4 py-3">
-                      <Skeleton className="h-4 w-full max-w-40" />
+                      <Skeleton className={cn('h-4', c.key === columns[0]?.key ? 'w-28' : 'w-full max-w-40')} />
                     </td>
                   ))}
                 </tr>
@@ -45,7 +45,7 @@ export function DataTable({ columns, rows, loading, error, onRetry, empty, onRow
                   onClick={onRowClick ? () => onRowClick(row) : undefined}
                   onKeyDown={onRowClick ? (e) => e.key === 'Enter' && onRowClick(row) : undefined}
                   tabIndex={onRowClick ? 0 : undefined}
-                  className={cn('border-b last:border-0 transition-colors', onRowClick && 'cursor-pointer hover:bg-accent/60 focus-visible:bg-accent')}
+                  className={cn('border-b last:border-0 transition-colors hover:bg-accent/50', onRowClick && 'cursor-pointer focus-visible:bg-accent')}
                 >
                   {columns.map((c) => (
                     <td key={c.key} className={cn('px-4 py-3 align-middle', c.className)}>

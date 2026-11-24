@@ -19,7 +19,7 @@ export default function ClientDashboardPage() {
   return (
     <>
       <PageHeader title={`Welcome, ${me.user.fullName.split(' ')[0]}`} description={`Your valuation cases with ${me.context.firm.name}`} />
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         <StatCard label="Active cases" value={v(data?.counts.active)} icon={<FolderKanban />} href="/cases" />
         <StatCard label="Documents requested" value={v(data?.counts.pendingDocuments)} icon={<FileWarning />} />
         <StatCard label="In inspection" value={v(data?.counts.inspection)} icon={<MapPin />} />

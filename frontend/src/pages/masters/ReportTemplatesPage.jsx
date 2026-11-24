@@ -110,7 +110,7 @@ function Editor({ id }) {
       <CardHeader className="flex-row flex-wrap items-center justify-between gap-2">
         <div>
           <CardTitle className="flex items-center gap-2">
-            {t.name} <Badge tone={t.status === 'ACTIVE' ? 'success' : 'neutral'}>{t.status.toLowerCase()}</Badge>
+            {t.name} <Badge dot tone={t.status === 'ACTIVE' ? 'success' : 'danger'}>{t.status.toLowerCase()}</Badge>
           </CardTitle>
           <CardDescription>
             v{t.versionCount} · history: {t.versions.map((v) => `v${v.version} ${formatDateTime(v.createdAt)}`).join(' · ')}

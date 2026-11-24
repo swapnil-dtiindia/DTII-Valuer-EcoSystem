@@ -35,7 +35,8 @@ export default function LoginPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
+      <p className="text-[11px] font-semibold tracking-[0.16em] text-primary uppercase">Valuers Ecosystem</p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-tight">Sign in</h1>
       <p className="mt-1 text-sm text-muted-foreground">Use the account your valuation firm created for you.</p>
       {params.get('expired') && (
         <FormAlert tone="warning" className="mt-4">

@@ -118,7 +118,7 @@ export default function EmailSettingsPage() {
               { key: 'to', header: 'To', cell: (l) => l.toMasked },
               { key: 'subject', header: 'Subject', cell: (l) => l.subject, className: 'hidden md:table-cell' },
               { key: 'via', header: 'Via', cell: (l) => l.provider ?? '—', className: 'hidden lg:table-cell' },
-              { key: 'status', header: 'Status', cell: (l) => <Badge tone={l.status === 'SENT' ? 'success' : l.status === 'FAILED' ? 'danger' : 'warning'}>{humanize(l.status)}</Badge> },
+              { key: 'status', header: 'Status', cell: (l) => <Badge dot tone={l.status === 'SENT' ? 'success' : l.status === 'FAILED' ? 'danger' : 'warning'}>{humanize(l.status)}</Badge> },
             ]}
             rows={logs.data?.items}
             loading={logs.isLoading}

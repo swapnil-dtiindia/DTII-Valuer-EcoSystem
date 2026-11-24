@@ -3,7 +3,7 @@ import { Building2, FolderKanban, Landmark, PauseCircle, Plus, Users } from 'luc
 import { Link } from 'react-router';
 import { platformApi } from '@/services/adminApi';
 import { analyticsApi } from '@/services/analyticsApi';
-import { BarList } from '@/components/data/BarList';
+import { DonutBreakdown } from '@/components/data/charts';
 import { CASE_STATUS } from '@/utils/caseStatus';
 import { Button, Card, CardContent, CardHeader, CardTitle, Skeleton } from '@/components/ui/primitives';
 import { PageHeader } from '@/components/data/PageHeader';
@@ -30,22 +30,29 @@ export default function PlatformDashboardPage() {
           </Button>
         }
       />
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         <StatCard label="Registered firms" value={v(data?.firms.total)} icon={<Landmark />} href="/platform/firms" />
         <StatCard label="Active firms" value={v(data?.firms.active)} icon={<Landmark />} hint={data ? `${data.firms.suspended} suspended · ${data.firms.deactivated} deactivated` : undefined} href="/platform/firms?status=ACTIVE" />
         <StatCard label="Employees (active firms)" value={v(data?.employees)} icon={<Users />} />
         <StatCard label="Clients (active firms)" value={v(data?.clients)} icon={<Building2 />} />
         <StatCard label="Total valuation cases" value={v(cases.data?.total)} icon={<FolderKanban />} hint={cases.data ? `${cases.data.active} active` : undefined} />
       </div>
-      <Card className="mt-6">
+      <div className="mt-6 grid gap-6 xl:grid-cols-5">
+      <Card className="xl:col-span-2">
         <CardHeader>
-          <CardTitle>Cases by status (all firms)</CardTitle>
+          <CardTitle>Cases by status</CardTitle>
         </CardHeader>
         <CardContent>
-          <BarList items={Object.entries(cases.data?.byStatus ?? {}).sort((a, b) => b[1] - a[1]).map(([s, n]) => ({ key: s, label: CASE_STATUS[s]?.label ?? s, value: n }))} emptyText="No cases on the platform yet" ariaLabel="Cases by status across all firms" />
+          <DonutBreakdown
+            items={Object.entries(cases.data?.byStatus ?? {})
+              .sort((a, b) => b[1] - a[1])
+              .map(([s, n]) => ({ key: s, name: CASE_STATUS[s]?.label ?? s, value: n }))}
+            emptyText="No cases on the platform yet"
+            ariaLabel="Cases by status across all firms"
+          />
         </CardContent>
       </Card>
-      <Card className="mt-6">
+      <Card className="xl:col-span-3">
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Recently registered firms</CardTitle>
           <Link to="/platform/firms" className="text-sm font-medium text-primary hover:underline">
@@ -70,6 +77,7 @@ export default function PlatformDashboardPage() {
           </ul>
         </CardContent>
       </Card>
+      </div>
     </>
   );
 }
