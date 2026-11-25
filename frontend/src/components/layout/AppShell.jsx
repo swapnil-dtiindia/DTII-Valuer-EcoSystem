@@ -44,8 +44,8 @@ function Sidebar({ me, onNavigate }) {
                         active ? 'bg-sidebar-active text-white' : 'text-sidebar-foreground/85 hover:bg-white/6 hover:text-white',
                       )}
                     >
-                      {active && <span className="absolute top-1/2 left-0 h-4 w-0.5 -translate-y-1/2 rounded-full bg-[#7eb0ff]" aria-hidden />}
-                      <i.icon className={cn('size-4 shrink-0 transition-transform duration-150 group-hover:scale-110', active ? 'text-[#8eb8ff]' : 'text-sidebar-foreground/55 group-hover:text-white')} />
+                      {active && <span className="absolute top-1/2 left-0 h-4 w-0.5 -translate-y-1/2 rounded-full bg-lime" aria-hidden />}
+                      <i.icon className={cn('size-4 shrink-0 transition-transform duration-150 group-hover:scale-110', active ? 'text-lime' : 'text-sidebar-foreground/55 group-hover:text-white')} />
                       <span className="truncate">{i.label}</span>
                     </Link>
                   </li>

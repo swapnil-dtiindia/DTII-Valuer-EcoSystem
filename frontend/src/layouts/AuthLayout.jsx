@@ -16,12 +16,12 @@ export default function AuthLayout() {
         <div
           aria-hidden
           className="pointer-events-none absolute -right-40 -top-40 size-[520px] rounded-full opacity-40"
-          style={{ background: 'radial-gradient(circle, rgba(0,93,248,0.55), transparent 65%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(10,100,238,0.45), transparent 65%)' }}
         />
         <Logo dark />
         <div className="relative mt-auto max-w-md">
-          <p className="text-[11px] font-semibold tracking-[0.18em] text-[#8eb8ff] uppercase">Property valuation platform</p>
-          <h2 className="mt-3 text-4xl font-semibold leading-[1.15] tracking-tight">A digital trust ecosystem for valuers, clients and banks.</h2>
+          <p className="text-[11px] font-semibold tracking-[0.18em] text-lime uppercase">Property valuation platform</p>
+          <h2 className="font-display mt-3 text-4xl leading-[1.05] tracking-tight">A digital trust ecosystem for valuers, clients and banks.</h2>
           <p className="mt-4 text-sidebar-foreground">
             Inspection, technical review, client approval, digital signature and bank submission, all in one traceable workflow.
           </p>
@@ -29,7 +29,7 @@ export default function AuthLayout() {
             {FEATURES.map((f) => (
               <li key={f.t} className="flex gap-3">
                 <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-white/10">
-                  <f.icon className="size-4 text-[#7fb0ff]" />
+                  <f.icon className="size-4 text-lime" />
                 </span>
                 <span>
                   <span className="block font-medium text-white">{f.t}</span>

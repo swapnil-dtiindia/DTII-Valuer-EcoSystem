@@ -80,7 +80,7 @@ const TILE_SETS = {
 };
 
 const LOAD_SERIES = [
-  { key: 'Marketing', label: 'Marketing', color: '#005df8' },
+  { key: 'Marketing', label: 'Marketing', color: '#0a64ee' },
   { key: 'Field', label: 'Field officer', color: '#0e7490' },
   { key: 'Junior', label: 'Junior reviewer', color: '#138a52' },
   { key: 'Senior', label: 'Senior reviewer', color: '#6366f1' },

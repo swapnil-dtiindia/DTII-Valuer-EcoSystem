@@ -1,16 +1,16 @@
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 /** Brand-led series colors. Order is stable so the same slice keeps the same hue across refreshes. */
-export const CHART_COLORS = ['#005df8', '#0e7490', '#138a52', '#6366f1', '#b54708', '#64748b', '#0f766e', '#7c3aed'];
+export const CHART_COLORS = ['#0a64ee', '#0e7490', '#138a52', '#6366f1', '#b54708', '#64748b', '#0f766e', '#7c3aed'];
 
 const tooltipStyle = {
   borderRadius: 10,
-  border: '1px solid var(--border)',
+  border: '1px solid var(--border)', 
   background: 'var(--card)',
   boxShadow: 'var(--shadow-card)',
   fontSize: 12,
   color: 'var(--foreground)',
-};
+};   
 
 function ChartEmpty({ text }) {
   return <p className="py-10 text-center text-sm text-muted-foreground">{text}</p>;
@@ -103,15 +103,15 @@ export function TrendArea({ items, ariaLabel, emptyText = 'No data yet', seriesN
         <AreaChart data={items} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="intakeFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#005df8" stopOpacity={0.28} />
-              <stop offset="100%" stopColor="#005df8" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="#0a64ee" stopOpacity={0.28} />
+              <stop offset="100%" stopColor="#0a64ee" stopOpacity={0.02} />
             </linearGradient>
           </defs>
           <CartesianGrid stroke="var(--border)" vertical={false} />
           <XAxis dataKey="label" tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }} axisLine={false} tickLine={false} />
           <YAxis allowDecimals={false} width={32} tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }} axisLine={false} tickLine={false} />
           <Tooltip formatter={(value) => [Number(value).toLocaleString('en-IN'), seriesName]} labelStyle={{ color: 'var(--foreground)', fontWeight: 600 }} contentStyle={tooltipStyle} />
-          <Area type="monotone" dataKey="value" name={seriesName} stroke="#005df8" strokeWidth={2.25} fill="url(#intakeFill)" activeDot={{ r: 4 }} isAnimationActive animationDuration={700} />
+          <Area type="monotone" dataKey="value" name={seriesName} stroke="#0a64ee" strokeWidth={2.25} fill="url(#intakeFill)" activeDot={{ r: 4 }} isAnimationActive animationDuration={700} />
         </AreaChart>
       </ResponsiveContainer>
     </div>
@@ -119,7 +119,7 @@ export function TrendArea({ items, ariaLabel, emptyText = 'No data yet', seriesN
 }
 
 /** Horizontal comparison bars. `items` are `{ key, label, value }`. */
-export function HorizontalBars({ items, ariaLabel, emptyText = 'No data yet', format = (n) => n.toLocaleString('en-IN'), seriesName = 'Value', color = '#005df8' }) {
+export function HorizontalBars({ items, ariaLabel, emptyText = 'No data yet', format = (n) => n.toLocaleString('en-IN'), seriesName = 'Value', color = '#0a64ee' }) {
   const rows = items.filter((i) => i.value > 0);
   if (!rows.length) return <ChartEmpty text={emptyText} />;
   return (
@@ -149,7 +149,7 @@ export function ColumnChart({ items, ariaLabel, emptyText = 'No data yet', forma
           <XAxis dataKey="label" tickFormatter={short} tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} axisLine={false} tickLine={false} interval={0} />
           <YAxis tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} axisLine={false} tickLine={false} width={36} />
           <Tooltip formatter={(value) => [format(value), seriesName]} contentStyle={tooltipStyle} />
-          <Bar dataKey="value" name={seriesName} fill="#005df8" radius={[5, 5, 0, 0]} maxBarSize={36} isAnimationActive animationDuration={700} />
+          <Bar dataKey="value" name={seriesName} fill="#0a64ee" radius={[5, 5, 0, 0]} maxBarSize={36} isAnimationActive animationDuration={700} />
         </BarChart>
       </ResponsiveContainer>
     </div>
